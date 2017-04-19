@@ -9,21 +9,7 @@ class Url extends CI_Controller {
 
 		$action = $this->input->post('_action');
 		if($action == 'add-urls'){
-			$this->form_validation->set_rules(
-				'urls', 'Urls', 
-				[
-					'required',
-					function($value)
-					{
-						$r = tinyurl::check_ulrs($value);
-						if($r !== TRUE){
-							$this->form_validation->set_message('urls', $r);
-							return FALSE;
-						}
-						return TRUE;
-					}
-				]
-			);
+			$this->form_validation->set_rules('urls', 'Urls', 'required|callback_validate_ulrs');
 
 			if ($this->form_validation->run() == FALSE){
 				$this->load->view('create');
@@ -49,9 +35,16 @@ class Url extends CI_Controller {
 			}
 		}
 		
-		
-
 		$this->load->view('create', ['table' => $table]);
+	}
+
+	public function validate_ulrs($value){
+		$r = tinyurl::check_ulrs($value);
+		if($r !== TRUE){
+			$this->form_validation->set_message('validate_ulrs', $r);
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 	public function list(){

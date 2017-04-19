@@ -20,11 +20,10 @@ class tinyurl{
                 if (!self::check_ulr($url)) {
                     return "$url is not a valid URL";
                 }
-
                 //Check if is internal
                 $parse_url = parse_url($url);
 		        $parse_base = parse_url(base_url());
-                if($parse_url['host'] && $parse_base['host']){
+                if($parse_url['host'] == $parse_base['host']){
                     return "$url is not a valid URL";
                 }
             }
